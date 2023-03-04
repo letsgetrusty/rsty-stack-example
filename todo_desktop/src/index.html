@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tauri App</title>
+  <script type="module" src="/main.js" defer></script>
+  <style>
+    .logo.vanilla:hover {
+      filter: drop-shadow(0 0 2em #ffe21c);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <label for="new-task">
+        Add Item
+      </label>
+      <div class="center">
+        <input id="new-task-input" type="text" />
+        <button id="new-task-btn">Add</button>
+      </div>
+    </div>
+    <h3>Todo</h3>
+    <div>
+      <ul id="task-list">
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>
