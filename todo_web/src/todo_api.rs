@@ -31,7 +31,7 @@ pub async fn toggle_task(id: String) -> Result<AffectedRows, Error> {
 }
 
 pub async fn delete_task(id: String) -> Result<AffectedRows, Error> {
-    Request::delete(&format!("http://localhost:8080/task/{id}"))
+    Request::delete(&format!("{BASE_URL}/task/{id}"))
         .send()
         .await
         .unwrap()
