@@ -38,8 +38,7 @@ impl TryFrom<W<Value>> for bool {
     type Error = Error;
     fn try_from(val: W<Value>) -> Result<bool, Error> {
         match val.0 {
-            Value::False => Ok(false),
-            Value::True => Ok(true),
+            Value::Bool(obj) => Ok(obj),
             _ => Err(Error::XValueNotOfType("bool")),
         }
     }

@@ -1,4 +1,4 @@
-use yew::{classes, function_component, html, Callback, Properties};
+use yew::{classes, function_component, html, Callback, Html, Properties};
 
 use crate::models::Task;
 

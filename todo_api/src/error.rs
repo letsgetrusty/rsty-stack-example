@@ -9,5 +9,8 @@ pub enum Error {
     Surreal(#[from] surrealdb::Error),
 
     #[error(transparent)]
+    Surrealdb(#[from] surrealdb::error::Db),
+
+    #[error(transparent)]
     IO(#[from] std::io::Error),
 }

@@ -1,5 +1,4 @@
 .vscode/
 .VSCodeCounter/
 Cargo.lock
-/dist
-/target
+target/
