@@ -13,12 +13,13 @@ pub async fn fetch_tasks() -> Result<Vec<Task>, Error> {
 }
 
 pub async fn create_task(title: &str) -> Result<Task, Error> {
-    Request::post(&format!("{BASE_URL}/task/{title}"))
+    let mut vec: Vec<Task> = Request::post(&format!("{BASE_URL}/task/{title}"))
         .send()
         .await
         .unwrap()
         .json()
-        .await
+        .await?;
+    Ok(vec.remove(0))
 }
 
 pub async fn toggle_task(id: String) -> Result<AffectedRows, Error> {

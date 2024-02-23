@@ -11,14 +11,9 @@ pub enum TaskAction {
     Toggle(String),
 }
 
+#[derive(Default)]
 pub struct TaskState {
     pub tasks: Vec<Task>,
-}
-
-impl Default for TaskState {
-    fn default() -> Self {
-        Self { tasks: vec![] }
-    }
 }
 
 impl Reducible for TaskState {
