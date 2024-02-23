@@ -2,3 +2,4 @@
 .VSCodeCounter/
 Cargo.lock
 target/
+temp.db

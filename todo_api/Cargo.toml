@@ -2,13 +2,14 @@
 name = "todo_api"
 version = "0.1.0"
 edition = "2021"
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rocket = { version = "0.5", features = ["json"] }
-tokio = { version = "1.36", features = ["full"] }
 chrono = { version = "0.4", features = ["serde"] }
+log = "0.4"
+rocket = { version = "0.5", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
-surrealdb = { version = "1.2", features = ["kv-mem"] }
+serde_json = { version = "1.0" }
+surrealdb = { version = "1.2", features = ["kv-rocksdb", "kv-mem"] }
 thiserror = "1.0"
+tokio = { version = "1.36", features = ["full"] }

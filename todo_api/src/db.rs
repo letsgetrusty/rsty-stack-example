@@ -1,11 +1,11 @@
-use crate::{prelude::W, utils::macros::map};
+use crate::utils::macros::map;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, sync::Arc};
 use surrealdb::{
     dbs::{Response, Session},
     kvs::Datastore,
-    sql::{thing, Array, Object, Value},
+    sql::{thing, Value},
 };
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -66,17 +66,17 @@ impl DB {
         Ok(res)
     }
 
-    pub async fn add_task(&self, title: &str) -> Result<Object, crate::error::Error> {
+    pub async fn add_task(&self, title: &str) -> Result<serde_json::Value, crate::error::Error> {
         let sql = "CREATE tasks SET title = $title, completed = false, created_at = time::now()";
         let vars: BTreeMap<String, Value> = map!["title".into() => Value::Strand(title.into())];
         let res = self.execute(sql, Some(vars)).await?;
 
         let first_res = res.into_iter().next().expect("Did not get a response");
 
-        W(first_res.result?.first()).try_into()
+        Ok(first_res.result?.into_json())
     }
 
-    pub async fn get_task(&self, id: &str) -> Result<Object, crate::error::Error> {
+    pub async fn get_task(&self, id: &str) -> Result<serde_json::Value, crate::error::Error> {
         let sql = "SELECT * FROM $th";
         let tid = format!("{}", id);
         let vars: BTreeMap<String, Value> = map!["th".into() => thing(&tid)?.into()];
@@ -84,19 +84,17 @@ impl DB {
 
         let first_res = ress.into_iter().next().expect("Did not get a response");
 
-        W(first_res.result?.first()).try_into()
+        Ok(first_res.result?.into_json())
     }
 
-    pub async fn get_all_tasks(&self) -> Result<Vec<Object>, crate::error::Error> {
+    pub async fn get_all_tasks(&self) -> Result<serde_json::Value, crate::error::Error> {
         let sql = "SELECT * FROM tasks ORDER BY created_at ASC;";
 
         let res = self.execute(sql, None).await?;
 
         let first_res = res.into_iter().next().expect("Did not get a response");
 
-        let array: Array = W(first_res.result?).try_into()?;
-
-        array.into_iter().map(|value| W(value).try_into()).collect()
+        Ok(first_res.result?.into_json())
     }
 
     pub async fn toggle_task(&self, id: &str) -> Result<AffectedRows, crate::error::Error> {

@@ -2,15 +2,18 @@
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("Value not of type '{0}'")]
-    XValueNotOfType(&'static str),
-
-    #[error(transparent)]
-    Surreal(#[from] surrealdb::Error),
-
     #[error(transparent)]
     Surrealdb(#[from] surrealdb::error::Db),
 
     #[error(transparent)]
     IO(#[from] std::io::Error),
+}
+
+impl From<Error> for std::io::Error {
+    fn from(e: Error) -> std::io::Error {
+        match e {
+            Error::IO(e) => e,
+            _ => std::io::Error::new(std::io::ErrorKind::Other, e.to_string()),
+        }
+    }
 }
